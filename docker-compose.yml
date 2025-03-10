@@ -1,0 +1,45 @@
+version: '3.8'
+
+volumes:
+  mysql-data:
+    name: techpoa_mysql_data
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: techpoa-mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: techpoa_db
+      MYSQL_USER: techpoauser
+      MYSQL_PASSWORD: techpoapassword
+      TZ: Africa/Nairobi
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  springboot-app:
+    image: techpoa-backend_app
+    container_name: techpoa-springboot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/techpoa_db
+      SPRING_DATASOURCE_USERNAME: techpoauser
+      SPRING_DATASOURCE_PASSWORD: techpoapassword
+      SERVER_PORT: 8088
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8088:8088"
+    restart: always

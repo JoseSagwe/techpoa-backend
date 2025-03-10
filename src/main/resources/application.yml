@@ -1,0 +1,25 @@
+server:
+  port: 8088
+
+admin:
+  access:
+    code: techpoa@admin2025
+
+
+spring:
+  application:
+    name: techpoa-backend
+  datasource:
+    url: jdbc:mysql://localhost:3307/poatech_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone=Africa/Nairobi:
