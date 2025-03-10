@@ -16,7 +16,7 @@ services:
       MYSQL_PASSWORD: techpoapassword
       TZ: Africa/Nairobi
     ports:
-      - "3307:3306"
+      - "3309:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
